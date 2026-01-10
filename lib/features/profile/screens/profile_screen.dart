@@ -1,6 +1,6 @@
 import 'dart:ui';
-import 'package:flutter/material.dart';
 import 'dart:math' as math;
+import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -61,7 +61,7 @@ class ProfileScreen extends StatelessWidget {
                       children: [
                         const CircleAvatar(
                           radius: 32,
-                          backgroundImage: AssetImage('assets/profile.jpg'),
+                          backgroundImage: AssetImage('assets/profile.png'),
                         ),
                         const SizedBox(width: 14),
                         Expanded(
@@ -69,7 +69,7 @@ class ProfileScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: const [
                               Text(
-                                "Arthur Dent",
+                                "Arthur Morgan",
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 18,
@@ -110,7 +110,7 @@ class ProfileScreen extends StatelessWidget {
                         ),
                         Switch(
                           value: true,
-                          onChanged: (v) {},
+                          onChanged: (_) {},
                           activeColor: Colors.cyanAccent,
                         ),
                       ],
@@ -119,11 +119,13 @@ class ProfileScreen extends StatelessWidget {
 
                   const SizedBox(height: 30),
 
-                  /// FIXED PROGRESS RING
+                  /// ANIMATED PROGRESS
                   _GlassContainer(
                     margin: const EdgeInsets.symmetric(horizontal: 16),
                     padding: const EdgeInsets.all(24),
-                    child: const GradientCircularProgress(progress: 0.871),
+                    child: const AnimatedGradientCircularProgress(
+                      targetProgress: 0.871,
+                    ),
                   ),
 
                   const SizedBox(height: 20),
@@ -153,12 +155,79 @@ class ProfileScreen extends StatelessWidget {
   }
 }
 
-/// ===================== GRADIENT PROGRESS =====================
+/// ======================================================
+/// 🎬 ANIMATED PROGRESS
+/// ======================================================
+
+class AnimatedGradientCircularProgress extends StatefulWidget {
+  final double targetProgress;
+
+  const AnimatedGradientCircularProgress({
+    super.key,
+    required this.targetProgress,
+  });
+
+  @override
+  State<AnimatedGradientCircularProgress> createState() =>
+      _AnimatedGradientCircularProgressState();
+}
+
+class _AnimatedGradientCircularProgressState
+    extends State<AnimatedGradientCircularProgress>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1300),
+    );
+
+    _animation = Tween<double>(
+      begin: 0,
+      end: widget.targetProgress,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic));
+
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _animation,
+      builder: (_, __) {
+        return GradientCircularProgress(
+          progress: _animation.value,
+          percentageText: "${(_animation.value * 100).toStringAsFixed(1)}%",
+        );
+      },
+    );
+  }
+}
+
+/// ======================================================
+/// 🎨 GRADIENT CIRCLE
+/// ======================================================
 
 class GradientCircularProgress extends StatelessWidget {
-  final double progress; // 0.0 → 1.0
+  final double progress;
+  final String percentageText;
 
-  const GradientCircularProgress({super.key, required this.progress});
+  const GradientCircularProgress({
+    super.key,
+    required this.progress,
+    required this.percentageText,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -178,8 +247,8 @@ class GradientCircularProgress extends StatelessWidget {
           ),
           Column(
             mainAxisSize: MainAxisSize.min,
-            children: const [
-              Text(
+            children: [
+              const Text(
                 "Personal\nprogress",
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -188,10 +257,10 @@ class GradientCircularProgress extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text(
-                "87.1%",
-                style: TextStyle(
+                percentageText,
+                style: const TextStyle(
                   color: Color(0xFF9FA8FF),
                   fontSize: 48,
                   fontWeight: FontWeight.bold,
@@ -256,7 +325,9 @@ class _GradientArcPainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }
 
-/// ===================== COMMON WIDGETS =====================
+/// ======================================================
+/// 🧩 COMMON WIDGETS
+/// ======================================================
 
 class _GlassContainer extends StatelessWidget {
   final Widget child;
@@ -324,7 +395,7 @@ class _CheckItem extends StatelessWidget {
       children: [
         Checkbox(
           value: value,
-          onChanged: (v) {},
+          onChanged: (_) {},
           activeColor: Colors.cyanAccent,
         ),
         Expanded(

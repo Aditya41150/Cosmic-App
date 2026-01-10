@@ -74,6 +74,7 @@ flutter:
     - assets/planets/planet2.png
     - assets/planets/planet4.png
     - assets/planets/planet5.png
+    - assets/profile.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 
