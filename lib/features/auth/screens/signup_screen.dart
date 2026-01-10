@@ -1,7 +1,6 @@
 import 'dart:ui';
 import 'package:cosmic/features/auth/screens/login_screen.dart';
 import 'package:flutter/material.dart';
-import 'signup_screen.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -152,13 +151,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                 child: Container(
                                   alignment: Alignment.center,
                                   height: 50,
-                                  child: const Text(
-                                    "Sign up",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                  child: Image(
+                                    image: AssetImage('assets/signup.png'),
                                   ),
                                 ),
                               ),

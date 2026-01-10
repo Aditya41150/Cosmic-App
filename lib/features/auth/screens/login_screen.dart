@@ -151,13 +151,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: Container(
                                   alignment: Alignment.center,
                                   height: 50,
-                                  child: const Text(
-                                    "Sign In",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                  child: Image(
+                                    image: AssetImage('assets/signin.png'),
                                   ),
                                 ),
                               ),

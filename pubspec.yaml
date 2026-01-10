@@ -67,6 +67,13 @@ flutter:
     - assets/google.png
     - assets/facebook.png
     - assets/twitter.png
+    - assets/signin.png
+    - assets/signup.png
+    - assets/planets/planet1.png
+    - assets/planets/earth.png
+    - assets/planets/planet2.png
+    - assets/planets/planet4.png
+    - assets/planets/planet5.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 

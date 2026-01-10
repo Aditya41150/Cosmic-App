@@ -1,3 +1,4 @@
+import 'package:cosmic/features/home/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'core/theme/app_theme.dart';
 import 'features/auth/screens/login_screen.dart';
@@ -16,7 +17,7 @@ class CosmicApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Cosmic',
       theme: AppTheme.darkTheme,
-      home: const LoginScreen(),
+      home: const HomeScreen(),
     );
   }
 }
