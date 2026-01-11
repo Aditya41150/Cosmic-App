@@ -147,20 +147,23 @@ This project uses Firebase for authentication. Sensitive configuration is stored
 **Files to configure:**
 - `lib/firebase_options.dart` - Firebase credentials (use template provided)
 
-<<<<<<< HEAD
-## 🤝 Contributing
-=======
+## 📦 Building for Production
+
 ```bash
 flutter build apk      # Android
 flutter build ios      # iOS
 flutter build web      # Web
 ```
-# Screenshots
+
+## 📸 Screenshots
+
 <img width="438" height="828" alt="image" src="https://github.com/user-attachments/assets/856f7754-2f57-43ec-b6b8-d795658682eb" />
 
-# UI Inspired From
-https://www.figma.com/design/cz2jAOkuZvkWjBytiuBpY2/Cosmic-%E2%80%94-Free-Flutter-App-UI-Template--Community-?node-id=297-3830&t=phj5K3MzC6DKTmJ9-0
->>>>>>> 528e692ca6f046829ad78328d29fe0bb7f73dce6
+## 🎨 UI Inspired From
+
+Design inspiration from: [Cosmic — Free Flutter App UI Template](https://www.figma.com/design/cz2jAOkuZvkWjBytiuBpY2/Cosmic-%E2%80%94-Free-Flutter-App-UI-Template--Community-?node-id=297-3830&t=phj5K3MzC6DKTmJ9-0)
+
+## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
