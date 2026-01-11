@@ -1,151 +1,199 @@
 import 'dart:ui';
-import 'dart:math' as math;
+import 'dart:math';
+import 'package:cosmic/core/services/auth_service.dart';
+import 'package:cosmic/features/auth/screens/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final AuthService authService = AuthService();
+    final bottomPadding = MediaQuery.of(context).padding.bottom;
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          // BACKGROUND
+          // 1. FULL SCREEN BACKDROP
           Positioned.fill(
-            child: Image.asset('assets/background.png', fit: BoxFit.cover),
+            child: Image.asset(
+              'assets/background.png',
+              fit: BoxFit.cover,
+            ),
           ),
 
+          // 2. MAIN CONTENT
           SafeArea(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.only(bottom: 40),
-              child: Column(
-                children: [
-                  const SizedBox(height: 12),
-
-                  /// APP BAR
-                  _GlassContainer(
-                    margin: const EdgeInsets.symmetric(horizontal: 16),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 14,
-                    ),
-                    child: Row(
-                      children: [
-                        _CircleButton(
-                          icon: Icons.arrow_back,
-                          onTap: () => Navigator.pop(context),
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 800),
+                child: SingleChildScrollView(
+                  padding: EdgeInsets.fromLTRB(16, 12, 16, 20 + bottomPadding),
+                  child: Column(
+                    children: [
+                      /// APP BAR
+                      _GlassContainer(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 14,
                         ),
-                        const Spacer(),
-                        const Text(
-                          "My Profile",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
+                        child: Row(
+                          children: [
+                            _CircleButton(
+                              icon: Icons.arrow_back,
+                              onTap: () => Navigator.pop(context),
+                            ),
+                            const Spacer(),
+                            const Text(
+                              "My Profile",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const Spacer(),
+                            const SizedBox(width: 44),
+                          ],
+                        ),
+                      ).animate().fadeIn(duration: 400.ms).slideY(begin: -0.2),
+
+                      const SizedBox(height: 25),
+
+                      /// PROFILE CARD
+                      _GlassContainer(
+                        padding: const EdgeInsets.all(16),
+                        child: Row(
+                          children: [
+                            const CircleAvatar(
+                              radius: 32,
+                              backgroundImage: AssetImage('assets/profile.png'),
+                            ),
+                            const SizedBox(width: 14),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: const [
+                                  Text(
+                                    "Arthur Morgan",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 4),
+                                  Text(
+                                    "Space adventurer",
+                                    style: TextStyle(color: Colors.white70),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {},
+                              icon: const Icon(Icons.edit, color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ).animate().fadeIn(delay: 100.ms).slideX(begin: 0.1),
+
+                      const SizedBox(height: 20),
+
+                      /// TOGGLE
+                      _GlassContainer(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              "Show planetary progress",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            Switch(
+                              value: true,
+                              onChanged: (_) {},
+                              activeColor: Colors.cyanAccent,
+                            ),
+                          ],
+                        ),
+                      ).animate().fadeIn(delay: 200.ms).slideX(begin: 0.1),
+
+                      const SizedBox(height: 30),
+
+                      /// ANIMATED PROGRESS
+                      _GlassContainer(
+                        padding: const EdgeInsets.all(24),
+                        child: const AnimatedGradientCircularProgress(
+                          targetProgress: 0.871,
+                        ),
+                      ).animate().fadeIn(delay: 300.ms).scale(),
+
+                      const SizedBox(height: 25),
+
+                      /// CHECKBOXES
+                      _GlassContainer(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          children: const [
+                            _CheckItem(
+                              title: "Show me in Planet Rating",
+                              value: true,
+                            ),
+                            SizedBox(height: 10),
+                            _CheckItem(title: "Notifications", value: true),
+                          ],
+                        ),
+                      ).animate().fadeIn(delay: 400.ms).slideY(begin: 0.2),
+
+                      const SizedBox(height: 30),
+
+                      /// LOGOUT BUTTON
+                      InkWell(
+                        onTap: () async {
+                          await authService.signOut();
+                          if (context.mounted) {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(builder: (_) => const LoginScreen()),
+                              (route) => false,
+                            );
+                          }
+                        },
+                        borderRadius: BorderRadius.circular(24),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          decoration: BoxDecoration(
+                            color: Colors.redAccent.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(24),
+                            border: Border.all(color: Colors.redAccent.withValues(alpha: 0.3)),
                           ),
-                        ),
-                        const Spacer(),
-                        const SizedBox(width: 44),
-                      ],
-                    ),
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  /// PROFILE CARD
-                  _GlassContainer(
-                    margin: const EdgeInsets.symmetric(horizontal: 16),
-                    padding: const EdgeInsets.all(16),
-                    child: Row(
-                      children: [
-                        const CircleAvatar(
-                          radius: 32,
-                          backgroundImage: AssetImage('assets/profile.png'),
-                        ),
-                        const SizedBox(width: 14),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: const [
+                              Icon(Icons.logout, color: Colors.redAccent),
+                              SizedBox(width: 10),
                               Text(
-                                "Arthur Morgan",
+                                "Log Out",
                                 style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
+                                  color: Colors.redAccent,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                 ),
-                              ),
-                              SizedBox(height: 4),
-                              Text(
-                                "Space adventurer",
-                                style: TextStyle(color: Colors.white70),
                               ),
                             ],
                           ),
                         ),
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Icons.edit, color: Colors.white),
-                        ),
-                      ],
-                    ),
+                      ).animate().fadeIn(delay: 500.ms).slideY(begin: 0.2),
+                    ],
                   ),
-
-                  const SizedBox(height: 20),
-
-                  /// TOGGLE
-                  _GlassContainer(
-                    margin: const EdgeInsets.symmetric(horizontal: 16),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 12,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          "Show planetary progress",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        Switch(
-                          value: true,
-                          onChanged: (_) {},
-                          activeColor: Colors.cyanAccent,
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  const SizedBox(height: 30),
-
-                  /// ANIMATED PROGRESS
-                  _GlassContainer(
-                    margin: const EdgeInsets.symmetric(horizontal: 16),
-                    padding: const EdgeInsets.all(24),
-                    child: const AnimatedGradientCircularProgress(
-                      targetProgress: 0.871,
-                    ),
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  /// CHECKBOXES
-                  _GlassContainer(
-                    margin: const EdgeInsets.symmetric(horizontal: 16),
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      children: const [
-                        _CheckItem(
-                          title: "Show me in Planet Rating",
-                          value: true,
-                        ),
-                        SizedBox(height: 10),
-                        _CheckItem(title: "Notifications", value: true),
-                      ],
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
           ),
@@ -299,8 +347,8 @@ class _GradientArcPainter extends CustomPainter {
     final rect = Rect.fromLTWH(0, 0, size.width, size.height);
 
     final gradient = SweepGradient(
-      startAngle: -math.pi / 2,
-      endAngle: 3 * math.pi / 2,
+      startAngle: -pi / 2,
+      endAngle: 3 * pi / 2,
       colors: const [Color(0xFF00E5FF), Color(0xFF4A00E0), Color(0xFF8E2DE2)],
     );
 
@@ -314,8 +362,8 @@ class _GradientArcPainter extends CustomPainter {
 
     canvas.drawArc(
       Rect.fromCircle(center: size.center(Offset.zero), radius: radius),
-      -math.pi / 2,
-      2 * math.pi * progress,
+      -pi / 2,
+      2 * pi * progress,
       false,
       paint,
     );

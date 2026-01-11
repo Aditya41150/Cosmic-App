@@ -1,11 +1,31 @@
-import 'package:cosmic/features/home/screens/home_screen.dart';
+import 'package:cosmic/features/auth/screens/login_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'core/theme/app_theme.dart';
-import 'features/auth/screens/login_screen.dart';
-import 'package:device_preview/device_preview.dart';
+import 'firebase_options.dart';
 
-void main() {
-  runApp(DevicePreview(enabled: true, builder: (context) => const CosmicApp()));
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Enable Edge-to-Edge mode
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    systemNavigationBarColor: Colors.transparent,
+    statusBarColor: Colors.transparent,
+    systemNavigationBarDividerColor: Colors.transparent,
+    systemNavigationBarIconBrightness: Brightness.light,
+    statusBarIconBrightness: Brightness.light,
+  ));
+  
+  // This is crucial for truly transparent nav bar on some Android versions
+  await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+
+  // Initialize Firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  
+  runApp(const CosmicApp());
 }
 
 class CosmicApp extends StatelessWidget {
@@ -17,7 +37,7 @@ class CosmicApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Cosmic',
       theme: AppTheme.darkTheme,
-      home: const HomeScreen(),
+      home: const LoginScreen(),
     );
   }
 }

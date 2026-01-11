@@ -35,6 +35,13 @@ migrate_working_dir/
 
 
 .env
+
+# Firebase configuration (contains API keys)
+lib/firebase_options.dart
+firebase.json
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+
 # Symbolication related
 app.*.symbols
 

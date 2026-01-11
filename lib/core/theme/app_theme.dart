@@ -8,6 +8,14 @@ class AppTheme {
       brightness: Brightness.dark,
       scaffoldBackgroundColor: AppColors.background,
       
+      // Custom Page Transitions for a smoother feel
+      pageTransitionsTheme: const PageTransitionsTheme(
+        builders: {
+          TargetPlatform.android: ZoomPageTransitionsBuilder(),
+          TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+        },
+      ),
+
       // Use Inter as the default font
       textTheme: GoogleFonts.interTextTheme(
         const TextTheme(
@@ -15,11 +23,13 @@ class AppTheme {
             fontSize: 32,
             fontWeight: FontWeight.bold,
             color: AppColors.textPrimary,
+            letterSpacing: -0.5,
           ),
           headlineMedium: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.w600,
             color: AppColors.textPrimary,
+            letterSpacing: -0.2,
           ),
           bodyLarge: TextStyle(
             fontSize: 16,
@@ -40,10 +50,10 @@ class AppTheme {
         selectedItemColor: AppColors.primary,
         unselectedItemColor: AppColors.textSecondary,
         type: BottomNavigationBarType.fixed,
-        elevation: 10,
+        elevation: 0,
       ),
 
-      // Card Theme for the "Blocks" in Figma
+      // Card Theme
       cardTheme: CardThemeData(
         color: AppColors.surface,
         shape: RoundedRectangleBorder(
